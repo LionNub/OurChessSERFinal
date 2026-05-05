@@ -32,7 +32,7 @@ public class Square {
 		Square destination = board.squares[newRow][newCol];
 		
 		
-		if (destination.getPiece() != null && destination.getPieceColor().equals(this.getPieceColor())) {
+		if (destination.getPiece() != null && destination.getColor() == this.getColor()) {
 			System.out.println("Illegal move, try again.");
 			return false;
 		}
@@ -55,11 +55,11 @@ public class Square {
 		return piece.getPieceType();
 	}
 
-	public String getPieceColor() {
+	public Piece.Color getColor() { //Not javas class but our enum
 		if (piece == null) {
 			return null;
 		}
-		return piece.getPieceColor();
+		return piece.getColor();
 	}
 	
 	public boolean isWhiteSquare(){

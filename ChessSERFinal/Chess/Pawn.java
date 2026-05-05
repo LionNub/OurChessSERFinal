@@ -1,8 +1,10 @@
 //Pawn.java
+
+//Updated
 public class Pawn extends Piece{
 
-	public Pawn(String pieceColor){
-		super(pieceColor);
+	public Pawn(Type type, Color pieceColor){
+		super(type, pieceColor);
 	
 	}
 	
@@ -16,13 +18,14 @@ public class Pawn extends Piece{
 		int colDifference = newCol - oldCol; // could be negative
 		int rowDifference = newRow - oldRow;
 		
-		if (this.getPieceColor().equals("white")){	 // if white pawn
-			if (newRow == oldRow - 1 && Math.abs(newCol - oldCol) == 1 && board.squares[newRow][newCol].getPieceType() != null){//If theres a piece diagonally in front
+		if (this.getColor() == Color.WHITE){	 // if white pawn
+			if (newRow == oldRow - 1 && Math.abs(newCol - oldCol) == 1 && board.squares[newRow][newCol].getPiece() != null &&
+board.squares[newRow][newCol].getPiece().getColor() != this.getColor()) {//If theres a piece diagonally in front
 				return true;
 			}
 							
 			if (newRow == oldRow - 1 && newCol == oldCol && board.squares[newRow][newCol].getPieceType() == null){
-				System.out.println("moving [" + oldRow + "][" + oldCol + " to [" + newRow + "][" + newCol + "]");
+				//System.out.println("moving [" + oldRow + "][" + oldCol + " to [" + newRow + "][" + newCol + "]");
 				return true;
 			}
 			
@@ -35,11 +38,12 @@ public class Pawn extends Piece{
 			return false;
 			
 		}else{//if black pawn
-			if (newRow == oldRow + 1 && Math.abs(newCol - oldCol) == 1 && board.squares[newRow][newCol].getPiece() != null) {
+			if (newRow == oldRow + 1 && Math.abs(newCol - oldCol) == 1 && board.squares[newRow][newCol].getPiece() != null &&
+board.squares[newRow][newCol].getPiece().getColor() != this.getColor()) {
 				return true;
 			}
 			if (newRow == oldRow + 1 && newCol == oldCol && board.squares[newRow][newCol].getPiece() == null){
-				IO.println("moving [" + oldRow + "][" + oldCol + " to [" + newRow + "][" + newCol + "]");
+				//System.out.println("moving [" + oldRow + "][" + oldCol + " to [" + newRow + "][" + newCol + "]");
 				return true;
 			}
 			if (newRow == oldRow + 2 && newCol == oldCol && oldRow == 1

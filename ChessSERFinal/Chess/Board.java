@@ -4,6 +4,11 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.SwingUtilities;
+import javax.swing.JFrame;
+import java.awt.BorderLayout;
+
+//Updated
 
 public class Board{
 	
@@ -16,13 +21,27 @@ public class Board{
 	
 	Square[][] squares = new Square[8][8]; //Need 64 total
 
-    Piece[] blackLineUp = {new Rook("black"), new Knight("black"), new Bishop("black"),
-                           new Queen("black"), new King("black"), new Bishop("black"),
-                           new Knight("black"), new Rook("black")};
+	Piece[] blackLineUp = {
+		new Rook(Piece.Type.ROOK,     Piece.Color.BLACK),
+		new Knight(Piece.Type.KNIGHT, Piece.Color.BLACK),
+		new Bishop(Piece.Type.BISHOP, Piece.Color.BLACK),
+		new Queen(Piece.Type.QUEEN,   Piece.Color.BLACK),
+		new King(Piece.Type.KING,     Piece.Color.BLACK),
+		new Bishop(Piece.Type.BISHOP, Piece.Color.BLACK),
+		new Knight(Piece.Type.KNIGHT, Piece.Color.BLACK),
+		new Rook(Piece.Type.ROOK,     Piece.Color.BLACK)
+	};
 
-    Piece[] whiteLineUp = {new Rook("white"), new Knight("white"), new Bishop("white"),
-                           new Queen("white"), new King("white"), new Bishop("white"),
-                           new Knight("white"), new Rook("white")};
+	Piece[] whiteLineUp = {
+		new Rook(Piece.Type.ROOK,     Piece.Color.WHITE),
+		new Knight(Piece.Type.KNIGHT, Piece.Color.WHITE),
+		new Bishop(Piece.Type.BISHOP, Piece.Color.WHITE),
+		new Queen(Piece.Type.QUEEN,   Piece.Color.WHITE),
+		new King(Piece.Type.KING,     Piece.Color.WHITE),
+		new Bishop(Piece.Type.BISHOP, Piece.Color.WHITE),
+		new Knight(Piece.Type.KNIGHT, Piece.Color.WHITE),
+		new Rook(Piece.Type.ROOK,     Piece.Color.WHITE)
+	};
 
 	public static final String PURPLE= "\u001B[35m";
 	public static final String CYAN  = "\u001B[36m";
@@ -30,8 +49,23 @@ public class Board{
 
 	public static void main(String[] args){
 
-		Board myBoard = new Board();
+		Board myBoard = new Board();  
 		myBoard.boardSetup();
+
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Demo for Chess");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setResizable(false);
+            //frame.setContentPane(new ChessBoardPanel());
+            frame.setLayout(new BorderLayout());
+            StatusPanel sp = new StatusPanel();
+			frame.add(new ChessBoardPanel(myBoard, sp), BorderLayout.CENTER); 
+
+            frame.add(sp, BorderLayout.SOUTH);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
 		
 		System.out.println("\nWelcome to Chess!");
 		System.out.println("Do you have an ongoing chess game? y/n");
@@ -140,9 +174,9 @@ public class Board{
 			System.out.println("No piece at that location.");
 			return;
 		}
-		boolean pieceIsWhite = pastSquare.getPieceColor().equals("white");
+		boolean pieceIsWhite = pastSquare.getPiece().getColor() == Piece.Color.WHITE;
 		if (pieceIsWhite != isWhiteTurn) {
-			System.out.println("Capturing your own piece? Think twice!");
+			System.out.println("That's not your piece! It's " + (isWhiteTurn ? "white" : "black") + "'s turn.");
 			return;
 		}
 		
@@ -182,7 +216,7 @@ public class Board{
 			System.out.println(">---+---+---+---+---+---+---+---<"); // Divider put between rows to look cool
 			for (int i = 0; i < 8; i++){
 				if (this.squares[c][i] != null && this.squares[c][i].getPieceType() != null){// If there are no null properties
-					if (this.squares[c][i].getPieceColor().equals("black")){ //If it's a black piece
+					if (this.squares[c][i].getPiece().getColor() == Piece.Color.BLACK){ //If it's a black piece
 						System.out.print("| " + PURPLE + this.squares[c][i].getPieceType() + " " + RESET); //Print a purple square
 					} else {//If it's not a black piece
 						System.out.print("| " + CYAN + this.squares[c][i].getPieceType() + " " + RESET); //Print a cyan square
@@ -211,12 +245,7 @@ public class Board{
 		}
 		
 		for (int i = 0; i < this.squares.length; i++){//Assigns a row of black pawns.
-			if (i % 2 == 0){
-				this.squares[1][i] = new Square(new Pawn("black"), false);
-			}
-			else{
-				this.squares[1][i] = new Square(new Pawn("black"), true);
-			}
+				this.squares[1][i] = new Square(new Pawn(Piece.Type.PAWN, Piece.Color.BLACK), i % 2 != 0);
 		}				
 		
 		for (int r = 2; r < 6; r++) { //Blank squares
@@ -225,14 +254,9 @@ public class Board{
 			}
 		}
 
-		
-		for (int i = 0; i < this.squares.length; i++){//Assigns a row of white pawns.
-			if (i % 2 == 0){
-			this.squares[6][i] = new Square(new Pawn("white"), true);
-			}
-			else {
-			this.squares[6][i] = new Square(new Pawn("white"), false);
-			}
+				
+		for (int i = 0; i < this.squares.length; i++){
+			this.squares[6][i] = new Square(new Pawn(Piece.Type.PAWN, Piece.Color.WHITE), i % 2 == 0);
 		}
 		
 				
@@ -251,7 +275,7 @@ public class Board{
 		
 		for (int r = 0; r < 8; r++){
 			for (int c = 0; c < 8; c++){
-				if (squares[r][c].getPiece() instanceof King){
+				if (squares[r][c] != null && squares[r][c].getPiece() instanceof King) {
 					numOfKings++;
 				}
 			}
@@ -267,8 +291,8 @@ public class Board{
 		String winner = "";
 		for (int r = 0; r < 8; r++){
 			for (int c = 0; c < 8; c++){
-				if (squares[r][c].getPiece() instanceof King){					
-					if (squares[r][c].getPiece().getPieceColor().equals("white")){
+				if (squares[r][c] != null && squares[r][c].getPiece() instanceof King){
+					if (squares[r][c].getPiece().getColor() == (Piece.Color.WHITE)){
 						winner = "white";
 					}else {
 						winner = "black";

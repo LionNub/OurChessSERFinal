@@ -2,8 +2,8 @@
 
 public class Queen extends Piece{
 
-	public Queen(String pieceColor){
-		super(pieceColor);
+	public Queen(Type type, Color pieceColor){
+		super(type, pieceColor);
 
 	}
 

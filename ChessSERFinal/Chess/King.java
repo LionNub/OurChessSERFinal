@@ -2,8 +2,8 @@
 
 public class King extends Piece{
 
-	public King(String pieceColor){
-		super(pieceColor);
+	public King(Type type, Color pieceColor){
+		super(type, pieceColor);
 
 	}
 	

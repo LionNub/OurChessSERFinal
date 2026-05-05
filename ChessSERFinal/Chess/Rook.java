@@ -2,8 +2,8 @@
 
 public class Rook extends Piece{
 
-	public Rook(String pieceColor){
-		super(pieceColor);
+	public Rook(Type type, Color pieceColor){
+		super(type, pieceColor);
 
 	}
 	

@@ -1,9 +1,8 @@
 //Bishop.java
 public class Bishop extends Piece{
 
-	public Bishop(String pieceColor){
-		super(pieceColor);
-
+	public Bishop(Type type, Color pieceColor){
+		super(type, pieceColor);
 	}
 	
 	public String getPieceType() { 

@@ -2,8 +2,8 @@
 
 public class Knight extends Piece{
 
-	public Knight(String pieceColor){
-		super(pieceColor);
+	public Knight(Type type, Color pieceColor){
+		super(type, pieceColor);
 
 	}
 	public String getPieceType() { 
