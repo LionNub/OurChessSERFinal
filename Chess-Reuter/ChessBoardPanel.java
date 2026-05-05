@@ -25,9 +25,9 @@ public class ChessBoardPanel extends JPanel {
     private static final int SQUARE = 72;
 
     private static final Color LIGHT   = new Color(0x8CB4E8);
-    private static final Color DARK    = new Color(0x1D3557);
-    private static final Color SELECT  = new Color(0x00E5FF);      // neon cyan
-    private static final Color HOVER   = new Color(0xFF, 0xEB, 0x3B, 160); // translucent amber
+	private static final Color DARK    = new Color(0x1D3557);
+	private static final Color SELECT  = new Color(0x00E5FF);      // neon cyan
+	private static final Color HOVER   = new Color(0xFF, 0xEB, 0x3B, 160); // translucent amber
 
     private final Piece[][] board = new Piece[N][N];
     private final ChessRules rules = new ChessRules();
